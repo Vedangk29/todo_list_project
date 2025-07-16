@@ -1,0 +1,53 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <form action="/add" method="POST">
+            <input type="text" name="description" placeholder="Enter task description" required>
+            <button type="submit">Add Task</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{if .Tasks}}
+                    {{range .Tasks}}
+                        <tr>
+                            <td>{{.ID}}</td>
+                            <td>{{.Description}}</td>
+                            <td class="{{if .Completed}}completed{{else}}pending{{end}}">
+                                {{if .Completed}}Completed{{else}}Pending{{end}}
+                            </td>
+                            <td>
+                                {{if not .Completed}}
+                                    <form action="/complete/{{.ID}}" method="POST">
+                                        <button type="submit">Complete</button>
+                                    </form>
+                                {{end}}
+                            </td>
+                        </tr>
+                    {{end}}
+                {{else}}
+                    <tr>
+                        <td colspan="4">No tasks available.</td>
+                    </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
